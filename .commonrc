@@ -2,6 +2,8 @@
 
 source ~/.secrets
 
+PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games'
+
 ki_hex() {
     echo -n $1 | od -A n -t x1 | sed 's/ *//g' | tr -d '\n'
 }
