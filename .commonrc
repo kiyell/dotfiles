@@ -1,0 +1,81 @@
+# Load secrets
+
+source ~/.secrets
+
+ki_hex() {
+    echo -n $1 | od -A n -t x1 | sed 's/ *//g' | tr -d '\n'
+}
+
+ki_sanity_from_ascii() {
+    ki_hex $1|sha1sum|cut -c2,4,6,8
+}
+
+# Check aws keys for buckets
+
+ki_bucket_check() {
+   sudo aws configure --profile default set aws_access_key_id $1
+   sudo aws configure --profile default set aws_secret_access_key $2
+   echo "List-buckets run using KEY: $1, SECRET: $2"
+   sudo aws s3api list-buckets --query "Buckets[].Name"
+}
+
+# Get h1 JSON data for specified handle
+ki_h1_scope() {
+
+cat $1 |jq --arg handle "${2}" 'select (.attributes.handle==$handle)| .relationships.structured_scopes.data[]| select (.attributes.asset_type=="URL")'| jq .attributes.asset_identifier|cut -d '"' -f2
+
+}
+
+ki_lazy_git_update() {
+
+git add .
+git commit -m "lazy git heroku update"
+git push heroku master
+
+}
+
+# Adds proxy and disables Python3 https check
+ki_set_proxy() {
+
+echo "Proxy set to 127.0.0.1:8080 for http/https"
+
+export http_proxy='http://127.0.0.1:8080'
+export https_proxy='http://127.0.0.1:8080'
+export CURL_CA_BUNDLE=""
+}
+
+# Remove proxy
+ki_remove_proxy() {
+
+echo "Proxy removed"
+
+export http_proxy=
+export https_proxy=
+export CURL_CA_BUNDLE=""
+
+}
+
+# print lines present in second file but not in first
+ki_cmp() {
+
+awk 'FNR==NR {a[$0]++; next} !($0 in a)' $1 $2
+
+}
+
+ki_urlencode() {
+    # urlencode <string>
+
+    old_lc_collate=$LC_COLLATE
+    LC_COLLATE=C
+
+    local length="${#1}"
+    for (( i = 0; i < length; i++ )); do
+        local c="${1:$i:1}"
+        case $c in
+            [0-9.~_-]) printf '%s' "$c" ;;
+            *) printf '%%%02X' "'$c" ;;
+        esac
+    done
+
+    LC_COLLATE=$old_lc_collate
+}
