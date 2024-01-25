@@ -2,7 +2,7 @@
 
 source ~/.secrets
 
-PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games'
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:$HOME/.rubies/ruby-3.3.0/bin"
 
 ki_hex() {
     echo -n $1 | od -A n -t x1 | sed 's/ *//g' | tr -d '\n'
