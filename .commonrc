@@ -79,3 +79,17 @@ ki_urlencode() {
 
     LC_COLLATE=$old_lc_collate
 }
+
+# Update MYIP variable used in pentest prompt
+ki_pentest_prompt() {
+
+# If we don't have a tun0 address, than use the eth0 addr
+
+if [ -n "$(ifconfig | grep -A 1 'tun0:' | grep inet | awk '{print $2}')" ]; then
+  MYIP=$(ifconfig | grep -A 1 'tun0:' | grep inet | awk '{print $2}')
+else
+  MYIP=$(ifconfig | grep -A 1 'eth0:' | grep inet | awk '{print $2}')
+fi
+}
+
+
