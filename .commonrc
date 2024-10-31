@@ -37,10 +37,10 @@ git push heroku master
 # Adds proxy and disables Python3 https check
 ki_set_proxy() {
 
-echo "Proxy set to 192.168.1.102:8080 for http/https"
+echo "Proxy set to 127.0.0.1:8080 for http/https"
 
-export http_proxy='http://192.168.1.102:8080'
-export https_proxy='http://192.168.1.102:8080'
+export http_proxy='http://127.0.0.1:8080'
+export https_proxy='http://127.0.0.1:8080'
 export CURL_CA_BUNDLE=""
 }
 
@@ -80,7 +80,7 @@ ki_urlencode() {
     LC_COLLATE=$old_lc_collate
 }
 
-# Update MYIP variable used in pentest prompt
+# Create a prompt with date, ip addr, recording status
 ki_pentest_prompt() {
 
 # If we don't have a tun0 address, than use the eth0 addr
@@ -90,6 +90,21 @@ if [ -n "$(ifconfig | grep -A 1 'tun0:' | grep inet | awk '{print $2}')" ]; then
 else
   MYIP=$(ifconfig | grep -A 1 'eth0:' | grep inet | awk '{print $2}')
 fi
+
+# if recording set ISREC variable to RECORDING, if not set ISREC to norec
+
+if [ -n "$ASCIINEMA_REC" ]; then
+  ISREC="RECORDING"
+else
+  ISREC="norec"
+fi
+
 }
 
+ki_pentest_record() {
+# start asciicinema and record to file with timestamp
+timestamp=$(date +%s)
 
+asciinema rec "pentest-$timestamp.rec"
+
+}

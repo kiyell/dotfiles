@@ -1,3 +1,6 @@
+# Create PS1 prompt
+
+
 if [ -f ~/.bashrc ];
 then 
     .  ~/.bashrc; 

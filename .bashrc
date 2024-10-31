@@ -70,10 +70,19 @@ if [ -n "$(ifconfig | grep -A 1 'tun0:' | grep inet | awk '{print $2}')" ]; then
 else
   MYIP=$(ifconfig | grep -A 1 'eth0:' | grep inet | awk '{print $2}')
 fi
-PS1="\n\u@\h \D{%T} [\w] [\$(echo \$MYIP)] [REC:\$(echo \$ASCIINEMA_REC)] \n $ "
+PS1="\n\u@\h \D{%T} [\w] [\$(echo \$MYIP)] [\$(echo \$ISREC)] \n $ "
 PROMPT_COMMAND=ki_pentest_prompt
 
 ## End create Pentest Prompt
+
+#if [ "$color_prompt" = yes ]; then
+    # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+#    export PS1="\[\033[01;34m\]┌─\[\033[00m\]\${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] 
+#\[\033[01;34m\]└─\\[\033[00m\]\[\033[01;32m\]❯\[\033[00m\] "
+#else
+#    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+#fi
+#unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
