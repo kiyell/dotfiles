@@ -37,10 +37,11 @@ git push heroku master
 # Adds proxy and disables Python3 https check
 ki_set_proxy() {
 
-echo "Proxy set to 127.0.0.1:8080 for http/https"
+kiproxy="192.168.1.102"
+echo "Proxy set to $kiproxy:8080 for http/https"
 
-export http_proxy='http://127.0.0.1:8080'
-export https_proxy='http://127.0.0.1:8080'
+export http_proxy="http://$kiproxy:8080"
+export https_proxy="http://$kiproxy:8080"
 export CURL_CA_BUNDLE=""
 }
 
